@@ -14,9 +14,20 @@
       const skelly = new Image();
       skelly.src = "assets/skelly.png";
       skelly.addEventListener("load", terminouDeCarregar);
-      let pose = 0;
-      let quadro = 0;
-      const POSES = [
+      const player = new Image();
+      player.src = "assets/player.png";
+      player.addEventListener("load", terminouDeCarregar);
+      let playerPose = 0;
+      let skellyPose = 0;
+      let playerQuadro = 0;
+      let skellyQuadro = 0;
+      const PLAYER_POSES = [
+        { qmax: 6, pv: 12 },
+        { qmax: 6, pv: 12 },
+        { qmax: 6, pv: 12 },
+        { qmax: 6, pv: 12 },
+      ];
+      const SKELLY_POSES = [
         { qmax: 7, pv: 9 },
         { qmax: 7, pv: 9 },
         { qmax: 7, pv: 9 },
@@ -55,18 +66,36 @@
         t0 = t0 ?? t;
         dt = (t - t0) / 1000;
 
-        quadro = quadro >= POSES[pose].qmax - 1 ? 0 : quadro + POSES[pose].pv * dt;
+        playerQuadro =
+          playerQuadro >= PLAYER_POSES[playerPose].qmax - 1
+            ? 0
+            : playerQuadro + PLAYER_POSES[playerPose].pv * dt;
+        skellyQuadro =
+          skellyQuadro >= SKELLY_POSES[skellyPose].qmax - 1
+            ? 0
+            : skellyQuadro + SKELLY_POSES[skellyPose].pv * dt;
         desenhaFundo();
         ctx.drawImage(
           skelly,
-          Math.floor(quadro) * 64,
-          pose * 64,
+          Math.floor(skellyQuadro) * 64,
+          skellyPose * 64,
           64,
           64,
           0,
           0,
           64,
           64
+        );
+        ctx.drawImage(
+          player,
+          Math.floor(playerQuadro) * 20,
+          playerPose * 26,
+          20,
+          26,
+          50,
+          50,
+          40,
+          52
         );
 
         requestAnimationFrame(passo);
